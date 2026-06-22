@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/index.js",
     "check": "npm run check:syntax && npm run format:check",
-    "check:syntax": "node --check src/index.js && node --check src/server.js && node --check src/flow.js && node --check src/handlers.js && node --check src/bitrix.js && node --check src/order-status.js && node --check src/kb.js && node --check src/llm.js && node --check src/state.js && node --check src/config.js && node --check src/logger.js && node --check src/templates.js && node --check src/utils.js",
+    "check:syntax": "node --check src/index.js && node --check src/server.js && node --check src/flow.js && node --check src/handlers.js && node --check src/bitrix.js && node --check src/order-status.js && node --check src/state.js && node --check src/config.js && node --check src/logger.js && node --check src/templates.js && node --check src/utils.js",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

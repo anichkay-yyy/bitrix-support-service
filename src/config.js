@@ -1,8 +1,6 @@
 import { bool, int, splitCsv, str } from "./utils.js";
 
 export function loadConfig(env = process.env) {
-  const classifierKbIds = splitCsv(env.CLASSIFIER_KB_IDS || env.FULL_KB_IDS);
-  const replyKbIds = splitCsv(env.REPLY_KB_IDS || env.COMPACT_KB_IDS);
   return {
     host: str(env.HOST) || "0.0.0.0",
     port: int(env.PORT, 3900, 1, 65535),
@@ -29,16 +27,6 @@ export function loadConfig(env = process.env) {
     orderStatusServiceUrl: str(env.ORDER_STATUS_SERVICE_URL).replace(/\/+$/, ""),
     allowReceivedReply: bool(env.ALLOW_RECEIVED_REPLY, false),
 
-    assistantInternalUrl: str(env.ASSISTANT_INTERNAL_URL).replace(/\/+$/, ""),
-    assistantInternalToken: str(env.ASSISTANT_INTERNAL_TOKEN),
-    classifierKbIds: classifierKbIds.length > 0 ? classifierKbIds : ["e18766f6-f5cb-4cb6-92c0-7c6a39bb6cc3"],
-    replyKbIds: replyKbIds.length > 0 ? replyKbIds : ["ac2af1fb-ba9d-4911-8d72-018467559f51"],
-    supportKbIds: splitCsv(env.SUPPORT_KB_IDS),
-    faqTopK: int(env.FAQ_TOP_K, 8, 1, 30),
-
-    openrouterApiKey: str(env.OPENROUTER_API_KEY),
-    openrouterModel: str(env.OPENROUTER_MODEL) || "z-ai/glm-5",
-
     stateFile: str(env.STATE_FILE) || "./data/state.json",
     logFile: str(env.LOG_FILE) || "",
   };
@@ -58,12 +46,6 @@ export function publicConfig(config) {
     bitrixLeadStatusId: config.bitrixLeadStatusId,
     bitrixMaxLeads: config.bitrixMaxLeads,
     orderStatusConfigured: Boolean(config.orderStatusServiceUrl),
-    kbConfigured:
-      Boolean(config.assistantInternalUrl) &&
-      (config.classifierKbIds.length > 0 || config.replyKbIds.length > 0 || config.supportKbIds.length > 0),
-    classifierKbIds: config.classifierKbIds,
-    replyKbIds: config.replyKbIds,
-    llmConfigured: Boolean(config.openrouterApiKey),
     stateFile: config.stateFile,
     logFile: config.logFile || null,
   };

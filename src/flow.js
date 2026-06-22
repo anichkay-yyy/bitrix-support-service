@@ -1,23 +1,14 @@
 import { hashText, normalizeText, str } from "./utils.js";
-import {
-  faqHandler,
-  needReplyGate,
-  orderStatusHandler,
-  simpleReply,
-  templateHandler,
-  validateAnswer,
-} from "./handlers.js";
+import { needReplyGate, orderStatusHandler, simpleReply, templateHandler, validateAnswer } from "./handlers.js";
 import { chatIdFromPayload, leadIdFromPayload, messageIdFromPayload, textFromPayload } from "./bitrix.js";
 
 export class SupportFlow {
-  constructor({ config, logger, state, bitrix, orderStatusClient, kbClient, llmClient }) {
+  constructor({ config, logger, state, bitrix, orderStatusClient }) {
     this.config = config;
     this.logger = logger;
     this.state = state;
     this.bitrix = bitrix;
     this.orderStatusClient = orderStatusClient;
-    this.kbClient = kbClient;
-    this.llmClient = llmClient;
     this.emit = () => {};
   }
 
@@ -124,18 +115,7 @@ export class SupportFlow {
     }
     if (!result) result = templateHandler(text);
     if (!result) {
-      result = await faqHandler({
-        text,
-        contextMessages: context.messages || [],
-        kbClient: this.kbClient,
-        llmClient: this.llmClient,
-      });
-      this.emit({
-        type: "node_done",
-        nodeId: result.handler || "reply_generator",
-        nodeType: "custom-agent",
-        outputPreview: result.answer || result.reason,
-      });
+      result = { action: "skip", reason: "channel_only_no_local_reply", answer: "", handler: "channel_adapter" };
     }
 
     result = validateAnswer(result);

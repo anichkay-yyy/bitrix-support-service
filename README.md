@@ -11,9 +11,6 @@ Bitrix webhook or poll
 -> simple_reply_gate
 -> existing order/order-status handler
 -> deterministic templates
--> topic_classifier using full KB
--> safe_topic_gate
--> reply_generator using compact KB
 -> answer validation
 -> Bitrix Open Lines send + lead status update
 ```
@@ -77,9 +74,6 @@ The service health endpoint is `GET /health`. Bitrix webhooks should target:
 
 The container exposes port `3900` and writes local idempotency state to `/data/state.json`.
 
-## KB
+## Knowledge base
 
-Defaults match the real Bitrix flow:
-
-- classifier/full KB: `e18766f6-f5cb-4cb6-92c0-7c6a39bb6cc3`
-- reply/compact KB: `ac2af1fb-ba9d-4911-8d72-018467559f51`
+This service is a Bitrix channel adapter. It does not own or query Mary knowledge bases; KB selection and agent reasoning belong to the Mary platform.

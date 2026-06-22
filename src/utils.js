@@ -35,7 +35,7 @@ export function redact(value) {
   return String(value ?? "")
     .replace(/(rest\/\d+\/)[^/\s]+/gi, "$1[redacted]")
     .replace(/(Authorization:\s*Bearer\s+)[^\s]+/gi, "$1[redacted]")
-    .replace(/(OPENROUTER_API_KEY|ASSISTANT_INTERNAL_TOKEN|BITRIX_WEBHOOK_URL)=\S+/gi, "$1=[redacted]");
+    .replace(/(BITRIX_WEBHOOK_URL)=\S+/gi, "$1=[redacted]");
 }
 
 export function hashText(value) {
