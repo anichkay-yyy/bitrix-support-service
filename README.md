@@ -9,7 +9,6 @@ Bitrix webhook or poll
 -> Bitrix ingest/context checks
 -> need_reply_gate
 -> simple_reply_gate
--> existing order/order-status handler
 -> deterministic templates
 -> answer validation
 -> Bitrix Open Lines send + lead status update
@@ -76,4 +75,4 @@ The container exposes port `3900` and writes local idempotency state to `/data/s
 
 ## Knowledge base
 
-This service is a Bitrix channel adapter. It does not own or query Mary knowledge bases; KB selection and agent reasoning belong to the Mary platform.
+This service is a Bitrix channel adapter. It does not own or query Mary knowledge bases, ERP/order-status APIs, or LLMs; KB selection, ERP calls, and agent reasoning belong to the Mary platform.

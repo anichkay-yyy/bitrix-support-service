@@ -24,7 +24,6 @@ export function loadConfig(env = process.env) {
     excludedLeadIds: new Set(splitCsv(env.EXCLUDED_LEAD_IDS)),
     excludedSourceIds: new Set(splitCsv(env.EXCLUDED_SOURCE_IDS)),
 
-    orderStatusServiceUrl: str(env.ORDER_STATUS_SERVICE_URL).replace(/\/+$/, ""),
     allowReceivedReply: bool(env.ALLOW_RECEIVED_REPLY, false),
 
     stateFile: str(env.STATE_FILE) || "./data/state.json",
@@ -45,7 +44,6 @@ export function publicConfig(config) {
     bitrixConfigured: Boolean(config.bitrixWebhookUrl),
     bitrixLeadStatusId: config.bitrixLeadStatusId,
     bitrixMaxLeads: config.bitrixMaxLeads,
-    orderStatusConfigured: Boolean(config.orderStatusServiceUrl),
     stateFile: config.stateFile,
     logFile: config.logFile || null,
   };

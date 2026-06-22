@@ -2,7 +2,6 @@ import { loadConfig } from "./config.js";
 import { Logger } from "./logger.js";
 import { StateStore } from "./state.js";
 import { BitrixClient } from "./bitrix.js";
-import { OrderStatusClient } from "./order-status.js";
 import { SupportFlow } from "./flow.js";
 import { StandaloneServer } from "./server.js";
 
@@ -12,8 +11,7 @@ const state = new StateStore(config.stateFile);
 await state.load();
 
 const bitrix = new BitrixClient(config, logger);
-const orderStatusClient = new OrderStatusClient(config);
-const flow = new SupportFlow({ config, logger, state, bitrix, orderStatusClient });
+const flow = new SupportFlow({ config, logger, state, bitrix });
 const server = new StandaloneServer({ config, logger, state, flow });
 
 await server.start();

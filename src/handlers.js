@@ -1,5 +1,4 @@
 import { normalizeText, str } from "./utils.js";
-import { extractOrderNumbers, looksLikeOrderQuestion, renderOrderAnswer } from "./order-status.js";
 import {
   EXTRA_COPY_TEMPLATE,
   REPRINT_TEMPLATE,
@@ -36,33 +35,16 @@ export function simpleReply(text) {
   return null;
 }
 
-export async function orderStatusHandler({ text, orderStatusClient }) {
-  if (!looksLikeOrderQuestion(text)) return null;
-  const numbers = extractOrderNumbers(text).slice(0, 3);
-  const lookup = await orderStatusClient.lookup(numbers);
-  if (!lookup.ok)
-    return decision("skip", "order_lookup_error", "", { error: lookup.error, handler: "order_info_agent" });
-  const answer = renderOrderAnswer(lookup.result, numbers);
-  if (!answer)
-    return decision("skip", "order_not_replyable", "", { handler: "order_info_agent", order_result: lookup.result });
-  return decision("reply", "order_status", answer, {
-    handler: "order_info_agent",
-    nextStatusId: "UC_58B8VD",
-    nextStatusTitle: "Завершен",
-    order_result: lookup.result,
-  });
-}
-
 export function templateHandler(text) {
   if (looksLikeReprintRequest(text)) {
     return decision("reply", "reprint_template", REPRINT_TEMPLATE, {
-      handler: "order_info_agent",
+      handler: "template_handler",
       nextStatusId: "UC_58B8VD",
     });
   }
   if (looksLikeExtraCopyRequest(text)) {
     return decision("reply", "extra_copy_template", EXTRA_COPY_TEMPLATE, {
-      handler: "order_info_agent",
+      handler: "template_handler",
       nextStatusId: "UC_58B8VD",
     });
   }

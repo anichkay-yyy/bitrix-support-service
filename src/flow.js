@@ -1,14 +1,13 @@
 import { hashText, normalizeText, str } from "./utils.js";
-import { needReplyGate, orderStatusHandler, simpleReply, templateHandler, validateAnswer } from "./handlers.js";
+import { needReplyGate, simpleReply, templateHandler, validateAnswer } from "./handlers.js";
 import { chatIdFromPayload, leadIdFromPayload, messageIdFromPayload, textFromPayload } from "./bitrix.js";
 
 export class SupportFlow {
-  constructor({ config, logger, state, bitrix, orderStatusClient }) {
+  constructor({ config, logger, state, bitrix }) {
     this.config = config;
     this.logger = logger;
     this.state = state;
     this.bitrix = bitrix;
-    this.orderStatusClient = orderStatusClient;
     this.emit = () => {};
   }
 
@@ -101,16 +100,6 @@ export class SupportFlow {
           nodeId: "simple_reply_gate",
           edgeLabel: "yes",
           textPreview: result.answer,
-        });
-    }
-    if (!result) {
-      result = await orderStatusHandler({ text, orderStatusClient: this.orderStatusClient });
-      if (result)
-        this.emit({
-          type: "node_done",
-          nodeId: "order_info_agent",
-          nodeType: "custom-agent",
-          outputPreview: result.answer || result.reason,
         });
     }
     if (!result) result = templateHandler(text);
