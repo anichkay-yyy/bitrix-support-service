@@ -7,10 +7,10 @@ ENV NODE_ENV=production \
     PORT=3900 \
     STATE_FILE=/data/state.json
 
-RUN groupadd --system app \
-    && useradd --system --gid app --home-dir /app app \
+RUN groupadd --gid 65532 app \
+    && useradd --uid 65532 --gid app --home-dir /app --shell /usr/sbin/nologin app \
     && mkdir -p /data \
-    && chown app:app /data
+    && chown app:app /app /data
 
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts
@@ -18,7 +18,7 @@ RUN npm ci --omit=dev --ignore-scripts
 COPY src ./src
 COPY README.md ./
 
-USER app
+USER 65532:65532
 EXPOSE 3900
 VOLUME ["/data"]
 
