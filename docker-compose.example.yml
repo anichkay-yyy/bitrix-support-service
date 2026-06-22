@@ -1,0 +1,24 @@
+services:
+  bitrix-support-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bitrix-support-service
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:3900:3900"
+    networks:
+      mary-20_default:
+        aliases:
+          - workflow-runtime
+    volumes:
+      - bitrix-support-data:/data
+
+volumes:
+  bitrix-support-data:
+
+networks:
+  mary-20_default:
+    external: true
